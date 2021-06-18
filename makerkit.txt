@@ -1,0 +1,53 @@
+const int trigPin = 9;
+const int echoPin = 8;
+const int buzzPin = 2;
+const int Led_Pin=13;
+const int Switch=7;
+
+void setup()
+  {
+  pinMode(trigPin, OUTPUT); // trig pin will have pulses output
+  pinMode(echoPin, INPUT); // echo pin should be input to get pulse width
+  pinMode(buzzPin, OUTPUT); // buzz pin is output to control buzzer
+  pinMode(Led_Pin, OUTPUT);
+  pinMode(Switch, INPUT);
+  Serial.begin(9600);
+}
+void loop()
+{
+  float duration, distance;
+  digitalWrite(trigPin, HIGH);
+  delay(1);
+  digitalWrite(trigPin, LOW);
+  
+  duration = pulseIn(echoPin, HIGH);   // Measure the pulse input in echo pin
+  distance = ((float)(340 * duration) / 10000) / 2; 
+  
+    int buttonState = digitalRead(Switch);
+    if (buttonState == 1) // 버튼값이 1일 때 아래 대괄호 안의 내용을 실행합니다.
+         {
+            if (distance >= 0 && distance <= 10
+            ) {
+                digitalWrite(buzzPin, HIGH);
+                digitalWrite(Led_Pin, HIGH);   // turn the LED on (HIGH is the voltage level)
+                delay(100);
+              } 
+              else 
+             {
+                digitalWrite(buzzPin, LOW);
+                digitalWrite(Led_Pin, LOW);   // turn the LED on (LOW is the voltage level)
+                delay(100);
+             }
+         }
+        if (buttonState == 0) // 버튼값이 0일 때 아래 대괄호 안의 내용을 실행합니다.
+        {
+           digitalWrite(buzzPin, LOW);
+           digitalWrite(Led_Pin, LOW);   // turn the LED on (LOW is the voltage level)
+           delay(100);
+          }
+          
+ Serial.print("\nDIstance:");
+ Serial.print(distance);
+ Serial.print("\nbuttonState:");
+ Serial.print(buttonState); 
+  }
